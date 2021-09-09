@@ -1,33 +1,32 @@
-using System;
 using Xunit;
 
 namespace Enigma.Tests
 {
     public class RotorTests
     {
-        [Theory]
-        [InlineData('a', 15, 'p')]
-        [InlineData('x', 10, 'h')]
-        public void Caesar_translation_test(char input, int shift, char expectedResult)
+        [Fact]
+        public void Translation_test()
         {
-            var rotor = new RotorConfig(input, 1, shift);
+            // test 'G' being hit on the keyboard and being processed by the 
+            // first rotor, which is set at position 4
+            var rotor = new Rotor(4);
 
-            rotor.Translate();
+            var result = rotor.Translate('g');
 
-            Assert.Equal(expectedResult, (char)rotor.Value);
+            Assert.Equal('i', result);
+            Assert.Equal(5, rotor.Setting);
         }
 
-        [Theory]
-        [InlineData(1, 2)]
-        [InlineData(26, 1)]
-        public void Incrementing_test(int startingIndex, int expectedIndex)
+        [Fact]
+        public void Two_translations()
         {
-            var rotor = new RotorConfig('a', startingIndex, 1);
+            var rotor = new Rotor(4);
 
-            rotor.Translate();
-            rotor.IncrementIndex();
+            rotor.Translate('g');
+            var result = rotor.Translate('g');
 
-            Assert.Equal(expectedIndex, rotor.Index);
+            Assert.Equal('l', result);
+            Assert.Equal(6, rotor.Setting);
         }
     }
 }
