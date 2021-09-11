@@ -1,24 +1,56 @@
 ﻿using System;
 
-var rotorOne = new Rotor(4);
+var r1Setting = 4;
+var r2Setting = 15;
+var r3Setting = 22;
 
-Console.WriteLine("");
+var input = 'g';
 
-// process three steps manually, incrementing the index for the next rotor 
-// depending on the value of the index on the previous one
+var r1Output = Translation.Translate((int)input - ((int)'a' - 1), r1Setting);
+var r2Output = Translation.Translate(r1Output, r2Setting);
+var r3Output = Translation.Translate(r2Output, r3Setting);
+IncrementRotors();
 
-// ** Assumptions:
-// There is no translation between the key and home plate
-// Each rotor is alphabetical on the entry side (and so the output side is also 
-//  alphabetical when just using a simple shift)
-// All rotor use the same internal shift mechanism
+// translation into reflection plate
+// translation inside reflection plate
+// reverse translation through the rotors
+// translation onto home plate
+// steckerbrett translation back to character lamps
 
-// ** Process:
-// - Select a key, this dictates the entry letter on the first rotor
-//  - Entry point is also affected by the initial setting
-// - Translate the key inside the first rotor, this dictates the entry on the
-//  second rotor
-// - Shift the first rotor setting by one
-// - Shift second rotor if first is > 26, same for third
-// ** Reflection
+void IncrementRotors()
+{
+    r1Setting += 1;
 
+    if (r1Setting > 26)
+    {
+        r1Setting = 1;
+        r2Setting += 1;
+    }
+
+    if (r2Setting > 26)
+    {
+        r2Setting = 1;
+        r3Setting += 1;
+    }
+}
+
+public static class Translation
+{
+    public static int Translate(int input, int setting)
+    {
+        var index = input - 1 + setting;
+
+        if (index > 26)
+        {
+            index = index - 26;
+        }
+
+        int[] matrix = new[] {
+        23, 19, 4, 5, 2, 7, 8, 21, 10, 11,
+        9, 12, 15, 16, 13, 14, 3, 24, 26, 1,
+        17, 6, 18, 20, 22, 25
+    };
+
+        return matrix[index];
+    }
+}
