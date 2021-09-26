@@ -36,14 +36,25 @@ namespace Enigma.Tests
         }
 
         [Theory]
-        [InlineData(7, 9)]
-        [InlineData(25, 2)]
-        public void Reverse_translate_test(int input, int expectedOutput)
+        [InlineData(4, 9, 7)]
+        [InlineData(6, 2, 25)]
+        public void Reverse_translate_test(int setting, int input, int expectedOutput)
         {
-            // setting is irrelevant on reverse
-            Rotor subject = new(setting: 0, this.rotorConfig);
+            Rotor subject = new(setting, this.rotorConfig);
 
-            var output = subject.ReverseTranslation(input);
+            Assert.Equal(expectedOutput, subject.ReverseTranslation(input));
         }
+
+        [Theory]
+        [InlineData(14, 16)]
+        [InlineData(20, 1)]
+        public void Translate_without_setting_test(int input, int expectedOutput)
+        {
+            Rotor subject = new(0, this.rotorConfig);
+
+            var output = subject.Translate(input, false);
+
+            Assert.Equal(expectedOutput, output);
+        }   
     }
 }

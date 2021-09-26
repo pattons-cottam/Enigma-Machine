@@ -23,4 +23,9 @@
     <ProjectReference Include="..\Enigma\Enigma.csproj" />
   </ItemGroup>
 
+  <!-- this is only needed in the test project for some reason -->
+  <ItemGroup>
+    <None Update="Config/rotorsettings.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>
