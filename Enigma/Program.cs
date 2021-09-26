@@ -1,56 +1,43 @@
-﻿using System;
+using System;
+using System.IO;
+using Newtonsoft.Json; // dotnet add package Newtonsoft.Json
 
-var r1Setting = 4;
-var r2Setting = 15;
-var r3Setting = 22;
-
-var input = 'g';
-
-var r1Output = Translation.Translate((int)input - ((int)'a' - 1), r1Setting);
-var r2Output = Translation.Translate(r1Output, r2Setting);
-var r3Output = Translation.Translate(r2Output, r3Setting);
-IncrementRotors();
-
-// translation into reflection plate
-// translation inside reflection plate
-// reverse translation through the rotors
-// translation onto home plate
-// steckerbrett translation back to character lamps
-
-void IncrementRotors()
+class Program
 {
-    r1Setting += 1;
-
-    if (r1Setting > 26)
+    static void Main()
     {
-        r1Setting = 1;
-        r2Setting += 1;
+        var configJson = File.ReadAllText("./Config/rotorsettings.json");
+        var config = JsonConvert.DeserializeObject<Config>(configJson);
+
+        EnigmaMachine machine = new(config);
+
+        var input = (int)'g' - ((int)'a' - 1);
+        Console.WriteLine(machine.FirstRotorPass(input));
     }
 
-    if (r2Setting > 26)
+    class EnigmaMachine
     {
-        r2Setting = 1;
-        r3Setting += 1;
-    }
-}
+        Rotor RotorOne { get; set; }
+        Rotor RotorTwo { get; set; }
+        Rotor RotorThree { get; set; }
 
-public static class Translation
-{
-    public static int Translate(int input, int setting)
-    {
-        var index = input - 1 + setting;
-
-        if (index > 26)
+        public EnigmaMachine(Config config)
         {
-            index = index - 26;
+            this.RotorOne = config.RotorOne;
+            this.RotorTwo = config.RotorTwo;
+            this.RotorThree = config.RotorThree;
         }
 
-        int[] matrix = new[] {
-        23, 19, 4, 5, 2, 7, 8, 21, 10, 11,
-        9, 12, 15, 16, 13, 14, 3, 24, 26, 1,
-        17, 6, 18, 20, 22, 25
-    };
+        void FirstSteckerPass()
+        {
+            throw new NotImplementedException();
+        }
 
-        return matrix[index];
+        public int FirstRotorPass(int input)
+        {
+            return RotorThree.Translate(
+                RotorTwo.Translate(
+                    RotorOne.Translate(input)));
+        }
     }
 }
