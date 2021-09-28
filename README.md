@@ -3,8 +3,10 @@
 ## About
 A simple implementation of the [Enigma Machine](https://en.wikipedia.org/wiki/Enigma_machine) used to encrypt messages during the Second World War. 
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Enigma_wiring_kleur.svg/800px-Enigma_wiring_kleur.svg.png" 
-     width="300"/>
+<div align="center">
+     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Enigma_wiring_kleur.svg/800px-Enigma_wiring_kleur.svg.png" 
+          width="300"/>
+</div>
 
 
 
