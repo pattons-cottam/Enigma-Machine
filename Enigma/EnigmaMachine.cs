@@ -27,7 +27,7 @@ public class EnigmaMachine
         var d = RotorTranslations(c, reverse: true);
         // var e = SteckerTranslation(d);
 
-        return 1;
+        return d;
     }
 
     int SteckerTranslation(int input)
