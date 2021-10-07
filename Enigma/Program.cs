@@ -8,11 +8,12 @@ public class Program
     {
         var configJson = File.ReadAllText("./Config/rotorsettings.json");
         var config = JsonConvert.DeserializeObject<Config>(configJson);
-        // todo: validate config
+        
+        if (!Validator.ValidateConfiguration(config)) return;
 
         EnigmaMachine machine = new(config);
 
         var input = 'g';
-        Console.WriteLine(machine.Process(input));
+        Console.WriteLine(machine.Process(input)); // this is outputting a number
     }
 }
