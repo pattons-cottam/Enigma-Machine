@@ -23,9 +23,20 @@ public static class Validator
         return true;
     }
 
-    public static List<string> GetValidationErrors(Config config)
+    private static List<string> GetValidationErrors(Config config)
     {
         List<string> validationErrors = new();
+
+        if (config.RotorOne == null
+            || config.RotorTwo == null
+            || config.RotorThree == null)
+        {
+            validationErrors.Add("One or more rotors are missing configuration, three rotors expected");
+
+            // return here to avoid an exception below
+            return validationErrors;
+        }
+
         int[] control = Enumerable.Range(1, 26).ToArray();
 
         foreach (var rotor in new[] { config.RotorOne, config.RotorTwo, config.RotorThree })
@@ -35,7 +46,19 @@ public static class Validator
                 validationErrors.Add($"Invalid rotor setting found: {rotor.Setting} (expected: 1-26)");
             }
 
-            var orderedConfig = rotor.Config.OrderBy(x => x).ToArray();
+            if (rotor.Config.Length != 26)
+            {
+                validationErrors.Add($"Incorrect number of entries in rotor config: {rotor.Config.Length} (expected: 26)");
+            }
+
+            if (rotor.Config.Length != rotor.Config.Distinct().ToArray().Length)
+            {
+                validationErrors.Add("Rotor config contains duplicate entries");
+            }
+
+            var orderedConfig = rotor.Config
+                .OrderBy(x => x)
+                .ToArray();
 
             if (orderedConfig.Except(control).Count() != 0)
             {
